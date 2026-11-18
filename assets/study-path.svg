@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-labelledby="title desc">
+  <title id="title">Perjalanan akademik</title>
+  <desc id="desc">Tumpukan buku, jalur bertahap, dan bintang sebagai tujuan.</desc>
+  <rect width="360" height="220" rx="18" fill="#e6f0e9"/>
+  <path d="M28 178h304" stroke="#c0d2c6" stroke-width="2"/>
+  <path d="M60 156c45 0 34-48 83-48s38 35 76 35 37-42 78-42" fill="none" stroke="#47795b" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 10"/>
+  <circle cx="60" cy="156" r="8" fill="#c16d4b"/><circle cx="143" cy="108" r="8" fill="#d4a340"/><circle cx="219" cy="143" r="8" fill="#47795b"/><circle cx="297" cy="101" r="9" fill="#c16d4b"/>
+  <path d="m297 43 6 13 14 1-11 9 4 14-13-8-12 8 4-14-11-9 14-1z" fill="#d4a340"/>
+  <path d="M34 174h62v-17H34z" fill="#47795b"/><path d="M41 154h62v-17H41z" fill="#d4a340"/><path d="M29 134h62v-17H29z" fill="#c16d4b"/>
+  <path d="M42 123v-7h36v7m-25-16v-6h43v6" fill="none" stroke="#fff" stroke-width="2" opacity=".85"/>
+</svg>
