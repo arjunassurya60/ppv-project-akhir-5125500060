@@ -292,6 +292,7 @@ function addCourse() {
         courses.push(newCourse);
         resetForm();
         renderUI();
+        tampilToast(`${name} ditambahkan.`);
     });
 }
 
@@ -299,6 +300,7 @@ function deleteCourse(id) {
     showLoading(() => {
         courses = courses.filter(item => item.id !== id);
         renderUI();
+        tampilToast('Mata kuliah dihapus.', 'danger');
     });
 }
 
@@ -312,12 +314,16 @@ function resetForm() {
 }
 
 function resetAllData() {
-    if (confirm('Apakah Anda yakin ingin menghapus seluruh data mata kuliah?')) {
+    tampilKonfirmasi({
+        judul: 'Hapus semua mata kuliah?',
+        isi: 'Seluruh data mata kuliah akan dihapus dan tidak bisa dikembalikan.'
+    }, () => {
         showLoading(() => {
             courses = [];
             renderUI();
+            tampilToast('Semua mata kuliah dihapus.', 'danger');
         });
-    }
+    });
 }
 
 function loadSampleData() {
@@ -497,6 +503,7 @@ function saveProfile(event) {
     try {
         localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
         profileMessage.textContent = 'Profil berhasil disimpan di perangkat ini.';
+        tampilToast('Profil berhasil disimpan.');
     } catch (error) {
         profileMessage.textContent = 'Profil tidak dapat disimpan. Hapus foto atau gunakan foto yang lebih kecil.';
     }
