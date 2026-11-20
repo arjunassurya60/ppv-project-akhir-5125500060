@@ -342,12 +342,12 @@ function loadSampleData() {
 // -------------------------------------------------------------
 // RENDER & KALKULASI HASIL
 // -------------------------------------------------------------
-
-function renderUI() {
-    if (courses.length === 0) {
-        emptyState.hidden = false;
-        tableContainer.hidden = true;
-        btnResetAll.hidden = true;
+ function renderUI() {
+     if (courses.length === 0) {
+         emptyState.style.display = '';
+         emptyState.hidden = false;
+         tableContainer.hidden = true;
+         btnResetAll.hidden = true;
         
         ipkDisplay.textContent = '0.00';
         totalSksDisplay.textContent = '0';
