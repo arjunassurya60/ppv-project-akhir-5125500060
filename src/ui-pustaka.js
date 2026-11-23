@@ -1,4 +1,4 @@
-function tampilToast(pesan, jenis = 'success') {
+export function tampilToast(pesan, jenis = 'success') {
     const el = document.querySelector('#toastInfo');
     el.querySelector('#toastPesan').textContent = pesan;
     el.classList.remove('text-bg-success', 'text-bg-danger');
@@ -6,7 +6,7 @@ function tampilToast(pesan, jenis = 'success') {
     bootstrap.Toast.getOrCreateInstance(el, { delay: 3000 }).show();
 }
 
-function tampilKonfirmasi({ judul, isi, labelYa = 'Ya, hapus' }, onYa) {
+export function tampilKonfirmasi({ judul, isi, labelYa = 'Ya, hapus' }, onYa) {
     const el = document.querySelector('#modalKonfirmasi');
     const pemicu = document.activeElement;
     el.querySelector('#judulKonfirmasi').textContent = judul;
