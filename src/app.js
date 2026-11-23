@@ -1,4 +1,5 @@
 import { tampilToast, tampilKonfirmasi } from './ui-pustaka.js';
+import { ringkasan, tentukanPredikat } from './state.js';
 let courses = [];
 
 // Skala Bobot Nilai Matkul
@@ -384,7 +385,7 @@ function loadSampleData() {
         courseTableBody.appendChild(row);
     });
 
-    const { totalSks, totalPoints, ipk } = state.ringkasan();
+    const { totalSks, totalPoints, ipk } = ringkasan(courses);
 
     const previousIpk = ipkDisplay.textContent;
     ipkDisplay.textContent = ipk.toFixed(2);
@@ -406,7 +407,7 @@ function loadSampleData() {
 function updateTarget() {
   const rawTarget = Number(targetIpkInput.value);
   const target = Number.isFinite(rawTarget) ? Math.min(4, Math.max(0, rawTarget)) : 0;
-  const { totalSks, totalPoints, ipk } = state.ringkasan();
+  const { ipk } = ringkasan(courses);
   const progress = target ? Math.min(100, (ipk / target) * 100) : 100;
  
 
@@ -506,25 +507,16 @@ function saveProfile(event) {
 }
 
 function updatePredicate(ipk) {
-    let predicate = '';
-    let bgColor = '';
-
-    if (ipk >= 3.51) {
-        predicate = 'Dengan Pujian (Cum Laude)';
-        bgColor = '#10b981';
-    } else if (ipk >= 3.00) {
-        predicate = 'Sangat Memuaskan';
-        bgColor = '#2563eb';
-    } else if (ipk >= 2.75) {
-        predicate = 'Memuaskan';
-        bgColor = '#f59e0b';
-    } else {
-        predicate = 'Cukup';
-        bgColor = '#ef4444';
-    }
+    const { teks: predicate, kode } = tentukanPredikat(ipk);
+    const colors = {
+        pujian: '#10b981',
+        sangat: '#2563eb',
+        memuaskan: '#f59e0b',
+        cukup: '#ef4444'
+    };
 
     predicateBadge.textContent = predicate;
-    predicateBadge.style.backgroundColor = bgColor;
+    predicateBadge.style.backgroundColor = colors[kode];
 }
 
 function escapeHtml(text) {
