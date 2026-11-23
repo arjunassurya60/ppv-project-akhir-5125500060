@@ -1,6 +1,17 @@
+function simpanCourses(daftar) {
+    const hasil = simpan(daftar);
+    if (!hasil.ok && hasil.pesan) {
+        tampilToast(hasil.pesan, 'danger');
+    }
+    return hasil;
+}
 import { tampilToast, tampilKonfirmasi } from './ui-pustaka.js';
 import { ringkasan, tentukanPredikat } from './state.js';
-let courses = [];
+import { KUNCI, muat, simpan } from './storage.js';
+import { BarisMataKuliah } from './komponen.js';
+
+let courses = muat();
+
 
 // Skala Bobot Nilai Matkul
 const GRADE_WEIGHTS = {
@@ -290,6 +301,7 @@ function addCourse() {
 
     showLoading(() => {
         courses.push(newCourse);
+        simpanCourses(courses);
         resetForm();    
         renderUI();
         tampilToast(`${name} ditambahkan.`);
@@ -299,6 +311,7 @@ function addCourse() {
 function deleteCourse(id) {
     showLoading(() => {
         courses = courses.filter(item => item.id !== id);
+        simpanCourses(courses);
         renderUI();
         tampilToast('Mata kuliah dihapus.', 'danger');
     });
@@ -320,6 +333,7 @@ function resetAllData() {
     }, () => {
         showLoading(() => {
             courses = [];
+            simpanCourses(courses);
             renderUI();
             tampilToast('Semua mata kuliah dihapus.', 'danger');
         });
@@ -335,6 +349,7 @@ function loadSampleData() {
 
     showLoading(() => {
         courses = [...sampleData];
+        simpanCourses(courses);
         renderUI();
     });
 }
