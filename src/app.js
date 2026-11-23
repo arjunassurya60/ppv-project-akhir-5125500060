@@ -289,7 +289,7 @@ function addCourse() {
 
     showLoading(() => {
         courses.push(newCourse);
-        resetForm();
+        resetForm();    
         renderUI();
         tampilToast(`${name} ditambahkan.`);
     });
@@ -365,12 +365,10 @@ function loadSampleData() {
     btnResetAll.hidden = false;
 
     courseTableBody.innerHTML = '';
-    let totalSks = 0;
-    let totalPoints = 0;
+    
 
     courses.forEach((item, index) => {
-        totalSks += item.sks;
-        totalPoints += item.points;
+        
 
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -386,7 +384,7 @@ function loadSampleData() {
         courseTableBody.appendChild(row);
     });
 
-    const ipk = totalSks > 0 ? (totalPoints / totalSks) : 0;
+    const { totalSks, totalPoints, ipk } = state.ringkasan();
 
     const previousIpk = ipkDisplay.textContent;
     ipkDisplay.textContent = ipk.toFixed(2);
@@ -406,12 +404,11 @@ function loadSampleData() {
 }
 
 function updateTarget() {
-    const rawTarget = Number(targetIpkInput.value);
-    const target = Number.isFinite(rawTarget) ? Math.min(4, Math.max(0, rawTarget)) : 0;
-    const totalSks = courses.reduce((sum, item) => sum + item.sks, 0);
-    const totalPoints = courses.reduce((sum, item) => sum + item.points, 0);
-    const ipk = totalSks ? totalPoints / totalSks : 0;
-    const progress = target ? Math.min(100, (ipk / target) * 100) : 100;
+  const rawTarget = Number(targetIpkInput.value);
+  const target = Number.isFinite(rawTarget) ? Math.min(4, Math.max(0, rawTarget)) : 0;
+  const { totalSks, totalPoints, ipk } = state.ringkasan();
+  const progress = target ? Math.min(100, (ipk / target) * 100) : 100;
+ 
 
     targetDisplay.textContent = target.toFixed(2);
     currentTargetIpk.textContent = ipk.toFixed(2);
