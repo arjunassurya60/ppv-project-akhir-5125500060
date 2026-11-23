@@ -1,4 +1,5 @@
-export function ringkasan() {
+export function ringkasan(daftar) {
+    daftar = Array.isArray(daftar) ? daftar : [];
     const totalSks = daftar.reduce((jml, item) => jml + item.sks, 0);
     const totalPoints = daftar.reduce((jml, item) => jml + item.points, 0);
     const ipk = totalSks > 0 ? totalPoints / totalSks : 0;
