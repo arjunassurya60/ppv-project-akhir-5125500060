@@ -25,7 +25,6 @@
             <button class="tab-button is-active" id="tabOverview" type="button" role="tab" aria-selected="true" aria-controls="panelOverview" data-panel="panelOverview">Ringkasan</button>
             <button class="tab-button" id="tabGuide" type="button" role="tab" aria-selected="false" aria-controls="panelGuide" data-panel="panelGuide" tabindex="-1">Panduan nilai</button>
         </nav>
-</header>
         <main>
             <section class="tab-panel is-active" id="panelOverview" role="tabpanel" aria-labelledby="tabOverview" tabindex="0">
                 <div class="page-heading"><div><p class="eyebrow">DASHBOARD AKADEMIK</p><h1>Perjalanan studimu, terukur.</h1><p class="lede">Pantau hasil semester dan lihat langkah berikutnya menuju target IPK.</p></div><span class="term-stamp">PANTAUAN AKADEMIK</span></div>
@@ -68,6 +67,23 @@
                         <div class="profile-actions"><button class="btn-primary save-profile" type="submit">Simpan profil</button></div>
                     </form>
                 </section>
+            </section>
+
+            <section id="panelCatatanUji" aria-label="Catatan kuliah">
+                <p id="info" role="status" aria-live="polite">Penyimpanan siap digunakan.</p>
+                <form id="form">
+                    <label for="judul">Judul catatan</label>
+                    <input type="text" id="judul" name="judul" placeholder="Judul catatan">
+                    <button type="submit">Simpan catatan</button>
+                </form>
+                <div>
+                    <h2>Disematkan</h2>
+                    <div id="daftarDisematkan"></div>
+                </div>
+                <div>
+                    <h2>Semua catatan</h2>
+                    <div id="daftarSemuaCatatan"></div>
+                </div>
             </section>
         </main>
         <footer class="app-footer"><span>Kalkulator IPK Interaktif</span><span>Perhitungan berdasarkan nilai mata kuliah dan SKS.</span></footer>

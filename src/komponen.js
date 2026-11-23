@@ -36,3 +36,25 @@ export function BarisMataKuliah(item, nomor) {
 
     return tr;
 }
+
+export function KartuCatatan(catatan = {}) {
+    const artikel = document.createElement('article');
+    artikel.className = 'kartu-catatan';
+    if (catatan.id !== undefined) {
+        artikel.dataset.id = String(catatan.id);
+    }
+
+    const judulEl = document.createElement('h3');
+    judulEl.textContent = catatan.judul ?? '';
+
+    const mkEl = document.createElement('p');
+    mkEl.textContent = catatan.mk ?? '';
+
+    const btnSemat = document.createElement('button');
+    btnSemat.type = 'button';
+    btnSemat.className = 'btn-semat';
+    btnSemat.textContent = catatan.disematkan ? 'Lepas' : 'Sematkan';
+
+    artikel.append(judulEl, mkEl, btnSemat);
+    return artikel;
+}

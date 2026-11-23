@@ -5,13 +5,15 @@ function simpanCourses(daftar) {
     }
     return hasil;
 }
+
 import { tampilToast, tampilKonfirmasi } from './ui-pustaka.js';
 import { ringkasan, tentukanPredikat } from './state.js';
 import { KUNCI, muat, simpan } from './storage.js';
-import { BarisMataKuliah } from './komponen.js';
+import { BarisMataKuliah, KartuCatatan } from './komponen.js';
 
-let courses = muat();
-
+const initialItems = muat();
+let notes = initialItems.filter(item => typeof item?.judul === 'string');
+let courses = initialItems.filter(item => typeof item?.judul !== 'string');
 
 // Skala Bobot Nilai Matkul
 const GRADE_WEIGHTS = {
@@ -69,6 +71,12 @@ const btnRemovePhoto = document.getElementById('btnRemovePhoto');
 const PROFILE_STORAGE_KEY = 'kalkulatorIpkProfile';
 let profilePhotoData = '';
 let selectedPhotoName = '';
+
+const noteForm = document.getElementById('form');
+const noteTitleInput = document.getElementById('judul');
+const noteInfoEl = document.getElementById('info');
+const pinnedNotesContainer = document.getElementById('daftarDisematkan');
+const allNotesContainer = document.getElementById('daftarSemuaCatatan');
 
 function activatePanel(panelId, moveFocus = false) {
     const panel = document.getElementById(panelId);
@@ -168,6 +176,26 @@ courseTableBody.addEventListener('click', function(e) {
     const tombol = e.target.closest('.btn-del');
     if (!tombol) return;
     deleteCourse(Number(tombol.dataset.id));
+});
+
+noteForm?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const judulVal = noteTitleInput ? noteTitleInput.value : '';
+    if (!judulVal.trim()) return;
+
+    const newNote = {
+        id: Date.now() + Math.random(),
+        judul: judulVal,
+        mk: '',
+        dibuat: new Date().toISOString(),
+        disematkan: false
+    };
+
+    notes.push(newNote);
+    simpanCourses([...notes, ...courses]);
+    if (noteTitleInput) noteTitleInput.value = '';
+    if (noteInfoEl) noteInfoEl.textContent = `Catatan "${judulVal}" tersimpan.`;
+    renderNotes();
 });
 
 document.addEventListener('keydown', function(e) {
@@ -301,8 +329,8 @@ function addCourse() {
 
     showLoading(() => {
         courses.push(newCourse);
-        simpanCourses(courses);
-        resetForm();    
+        simpanCourses([...notes, ...courses]);
+        resetForm();
         renderUI();
         tampilToast(`${name} ditambahkan.`);
     });
@@ -311,7 +339,7 @@ function addCourse() {
 function deleteCourse(id) {
     showLoading(() => {
         courses = courses.filter(item => item.id !== id);
-        simpanCourses(courses);
+        simpanCourses([...notes, ...courses]);
         renderUI();
         tampilToast('Mata kuliah dihapus.', 'danger');
     });
@@ -333,7 +361,7 @@ function resetAllData() {
     }, () => {
         showLoading(() => {
             courses = [];
-            simpanCourses(courses);
+            simpanCourses([...notes, ...courses]);
             renderUI();
             tampilToast('Semua mata kuliah dihapus.', 'danger');
         });
@@ -349,21 +377,35 @@ function loadSampleData() {
 
     showLoading(() => {
         courses = [...sampleData];
-        simpanCourses(courses);
+        simpanCourses([...notes, ...courses]);
         renderUI();
     });
+}
+
+function renderNotes() {
+    if (!pinnedNotesContainer || !allNotesContainer) return;
+
+    const pinnedCards = notes
+        .filter(item => Boolean(item.disematkan))
+        .map(item => KartuCatatan(item));
+    const allCards = notes.map(item => KartuCatatan(item));
+
+    pinnedNotesContainer.replaceChildren(...pinnedCards);
+    allNotesContainer.replaceChildren(...allCards);
 }
 
 // -------------------------------------------------------------
 // RENDER & KALKULASI HASIL
 // -------------------------------------------------------------
- function renderUI() {
-     if (courses.length === 0) {
-         emptyState.style.display = '';
-         emptyState.hidden = false;
-         tableContainer.hidden = true;
-         btnResetAll.hidden = true;
-        
+function renderUI() {
+    renderNotes();
+
+    if (courses.length === 0) {
+        emptyState.style.display = '';
+        emptyState.hidden = false;
+        tableContainer.hidden = true;
+        btnResetAll.hidden = true;
+
         ipkDisplay.textContent = '0.00';
         totalSksDisplay.textContent = '0';
         totalCoursesDisplay.textContent = '0';
@@ -381,22 +423,9 @@ function loadSampleData() {
     btnResetAll.hidden = false;
 
     courseTableBody.innerHTML = '';
-    
 
     courses.forEach((item, index) => {
-        
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td><strong>${escapeHtml(item.name)}</strong></td>
-            <td class="text-center">${item.sks}</td>
-            <td class="text-center">${item.grade} (${item.weight.toFixed(2)})</td>
-            <td class="text-center">${item.points.toFixed(2)}</td>
-            <td class="text-center">
-                <button class="btn-del" data-id="${item.id}">Hapus</button>
-            </td>
-        `;
+        const row = BarisMataKuliah(item, index + 1);
         courseTableBody.appendChild(row);
     });
 
@@ -424,7 +453,6 @@ function updateTarget() {
   const target = Number.isFinite(rawTarget) ? Math.min(4, Math.max(0, rawTarget)) : 0;
   const { ipk } = ringkasan(courses);
   const progress = target ? Math.min(100, (ipk / target) * 100) : 100;
- 
 
     targetDisplay.textContent = target.toFixed(2);
     currentTargetIpk.textContent = ipk.toFixed(2);

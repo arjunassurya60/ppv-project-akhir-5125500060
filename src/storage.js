@@ -15,6 +15,19 @@ let cadanganMemori = [];
 function normalisasiItem(item) {
     if (!item || typeof item !== 'object') return null;
 
+    if (typeof item.judul === 'string') {
+        const judul = item.judul.trim();
+        if (!judul) return null;
+
+        return {
+            id: item.id ?? Date.now() + Math.random(),
+            judul: item.judul,
+            mk: typeof item.mk === 'string' ? item.mk : '',
+            dibuat: typeof item.dibuat === 'string' ? item.dibuat : new Date().toISOString(),
+            disematkan: Boolean(item.disematkan)
+        };
+    }
+
     const nama = typeof item.name === 'string' ? item.name.trim() : '';
     const sks = Number(item.sks);
     const nilai = typeof item.grade === 'string' ? item.grade.trim().toUpperCase() : '';
