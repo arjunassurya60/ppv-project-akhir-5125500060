@@ -1,9 +1,4 @@
-/**
- * KALKULATOR IPK INTERAKTIF
- * Penugasan Sub-CPMK-2 (Tugas 3 PPV)
- */
-
-// Global State Data Mata Kuliah
+import { tampilToast, tampilKonfirmasi } from './ui-pustaka.js';
 let courses = [];
 
 // Skala Bobot Nilai Matkul
@@ -157,8 +152,12 @@ selectGrade.addEventListener('change', function() {
 // 4. EVENT: click (Tombol Sampel Data & Hapus Semua)
 btnSample.addEventListener('click', loadSampleData);
 btnResetAll.addEventListener('click', resetAllData);
+courseTableBody.addEventListener('click', function(e) {
+    const tombol = e.target.closest('.btn-del');
+    if (!tombol) return;
+    deleteCourse(Number(tombol.dataset.id));
+});
 
-// 5. EVENT BONUS: keydown (Pintasan Keyboard Ctrl+Enter)
 document.addEventListener('keydown', function(e) {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         e.preventDefault();
@@ -381,7 +380,7 @@ function loadSampleData() {
             <td class="text-center">${item.grade} (${item.weight.toFixed(2)})</td>
             <td class="text-center">${item.points.toFixed(2)}</td>
             <td class="text-center">
-                <button class="btn-del" onclick="deleteCourse(${item.id})">Hapus</button>
+                <button class="btn-del" data-id="${item.id}">Hapus</button>
             </td>
         `;
         courseTableBody.appendChild(row);
