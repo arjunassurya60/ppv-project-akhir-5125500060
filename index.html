@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator IPK Interaktif - Tugas 3 PPV</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="src/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%232d5a43'/><text x='32' y='43' font-size='30' font-weight='700' text-anchor='middle' fill='%23f3d98b' font-family='serif'>IP</text></svg>">
+</head>
+<body>
+    <div class="container">
+                <header class="app-header">
+            <nav class="navbar navbar-expand-md w-100 p-0" aria-label="Menu utama">
+                <a class="navbar-brand brand" href="#panelOverview" aria-label="Kalkulator IPK, ke Ringkasan"><span class="brand-mark" aria-hidden="true">IP</span><span><strong>Kalkulator IPK</strong><small>Ruang akademik pribadi</small></span></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuUtama" aria-controls="menuUtama" aria-expanded="false" aria-label="Buka menu"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse justify-content-md-end" id="menuUtama">
+                    <button id="btnSample" class="btn-secondary mt-2 mt-md-0" type="button"><span aria-hidden="true">↗</span> Isi sampel</button>
+                </div>
+            </nav>
+        </header>
+        <nav class="tab-nav" aria-label="Navigasi aplikasi" role="tablist">
+            <button class="tab-button" id="tabProfile" type="button" role="tab" aria-selected="false" aria-controls="panelProfile" data-panel="panelProfile" tabindex="-1">Profil</button>
+            <button class="tab-button" id="tabCourses" type="button" role="tab" aria-selected="false" aria-controls="panelCourses" data-panel="panelCourses" tabindex="-1">Kelola mata kuliah</button>
+            <button class="tab-button is-active" id="tabOverview" type="button" role="tab" aria-selected="true" aria-controls="panelOverview" data-panel="panelOverview">Ringkasan</button>
+            <button class="tab-button" id="tabGuide" type="button" role="tab" aria-selected="false" aria-controls="panelGuide" data-panel="panelGuide" tabindex="-1">Panduan nilai</button>
+        </nav>
+        <main>
+            <section class="tab-panel is-active" id="panelOverview" role="tabpanel" aria-labelledby="tabOverview" tabindex="0">
+                <div class="page-heading"><div><p class="eyebrow">DASHBOARD AKADEMIK</p><h1>Perjalanan studimu, terukur.</h1><p class="lede">Pantau hasil semester dan lihat langkah berikutnya menuju target IPK.</p></div><span class="term-stamp">PANTAUAN AKADEMIK</span></div>
+                <div class="overview-grid">
+                    <section class="summary-box" aria-labelledby="summaryTitle"><div class="summary-main"><span class="summary-label" id="summaryTitle">Indeks Prestasi Kumulatif</span><div class="summary-value" id="ipkDisplay" aria-live="polite">0.00</div><div class="badge" id="predicateBadge">Belum Ada Data</div></div><div class="summary-details"><div class="detail-item"><span>Total SKS</span><strong id="totalSksDisplay">0</strong></div><div class="detail-item"><span>Mata kuliah</span><strong id="totalCoursesDisplay">0</strong></div><div class="detail-item"><span>Poin mutu</span><strong id="totalPointsDisplay">0.00</strong></div></div></section>
+                    <section class="target-panel" aria-labelledby="targetTitle"><div class="section-heading"><div><p class="eyebrow">ARAH BERIKUTNYA</p><h2 id="targetTitle">Target IPK</h2></div><label class="target-control" for="targetIpk"><span class="sr-only">Target IPK antara 0 hingga 4</span><input id="targetIpk" type="number" min="0" max="4" step="0.01" value="3.50"></label></div><div class="target-track" role="progressbar" id="targetProgress" aria-label="Posisi IPK saat ini terhadap target" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="targetProgressFill"></span></div><p class="target-message" id="targetMessage" aria-live="polite">Tambahkan mata kuliah untuk melihat perkembangan targetmu.</p><div class="target-foot"><span>IPK saat ini <strong id="currentTargetIpk">0.00</strong></span><span>Target <strong id="targetDisplay">3.50</strong></span></div></section>
+                </div>
+                <section class="visual-strip" aria-label="Ilustrasi perjalanan akademik"><img class="media-art" src="assets/study-path.svg" alt="Ilustrasi jalur bertahap menuju target akademik, dengan buku, titik kemajuan, dan bintang di puncak."><div><p class="eyebrow">LANGKAH KECIL, KEMAJUAN NYATA</p><h2>Setiap SKS ikut membentuk hasilmu.</h2><p>Catat nilai dengan konsisten agar perubahan IPK mudah dipantau dari waktu ke waktu.</p></div><span class="media-fallback" hidden>Ilustrasi perjalanan akademik tidak dapat dimuat.</span></section>
+                <div class="overview-footer"><span class="status-dot" aria-hidden="true"></span><span id="overviewStatus">Belum ada mata kuliah yang dicatat.</span><button class="text-button" type="button" data-go="panelCourses">Kelola data <span aria-hidden="true">→</span></button></div>
+            </section>
+            <section class="tab-panel" id="panelCourses" role="tabpanel" aria-labelledby="tabCourses" tabindex="0" hidden>
+                <div class="page-heading compact-heading"><div><p class="eyebrow">CATATAN SEMESTER</p><h1>Kelola mata kuliah</h1><p class="lede">Tambahkan nilai untuk memperbarui ringkasan IPK secara otomatis.</p></div></div>
+                <div class="main-grid">
+                    <section class="card form-card" aria-labelledby="formTitle"><h2 id="formTitle">Tambah mata kuliah</h2><form id="courseForm" novalidate>
+                        <div class="form-group"><label for="courseName">Nama mata kuliah <span aria-hidden="true">*</span></label><input type="text" id="courseName" placeholder="Contoh: Pemrograman Web" autocomplete="off" aria-describedby="errCourseName"><span class="error-msg" id="errCourseName" role="alert"></span></div>
+                        <div class="form-row"><div class="form-group"><label for="courseSks">Jumlah SKS <span aria-hidden="true">*</span></label><input type="number" id="courseSks" min="1" max="6" step="1" placeholder="3" aria-describedby="errCourseSks"><span class="error-msg" id="errCourseSks" role="alert"></span></div><div class="form-group"><label for="courseGrade">Nilai huruf <span aria-hidden="true">*</span></label><select id="courseGrade" aria-describedby="errCourseGrade"><option value="">Pilih nilai</option><option value="E">E (0.00)</option><option value="D">D (1.00)</option><option value="C">C (2.00)</option><option value="BC">BC (2.50)</option><option value="B">B (3.00)</option><option value="AB">AB (3.50)</option><option value="A">A (4.00)</option></select><span class="error-msg" id="errCourseGrade" role="alert"></span></div></div>
+                        <div class="form-preview"><span>Poin mutu mata kuliah</span><strong id="previewPoints">0.00</strong></div><button type="submit" id="btnSubmit" class="btn-primary"><span aria-hidden="true">＋</span> Tambah mata kuliah</button>
+                    </form><p class="shortcut-info">Pintasan: <kbd>Enter</kbd> untuk menyimpan, atau <kbd>Ctrl</kbd> + <kbd>Enter</kbd>.</p></section>
+                    <section class="card list-card" aria-labelledby="listTitle"><div class="table-header"><div><p class="eyebrow">DATA TERSIMPAN</p><h2 id="listTitle">Daftar mata kuliah</h2></div><button id="btnResetAll" class="btn-danger-outline" type="button" hidden>Hapus semua</button></div><div id="loadingState" class="state-container" role="status" aria-live="polite" hidden><div class="spinner" aria-hidden="true"></div><p>Memperbarui data...</p></div><div id="emptyState" class="state-container"><div class="empty-icon" aria-hidden="true">＋</div><h3>Belum ada mata kuliah</h3><p>Isi formulir di samping untuk mulai menghitung IPK.</p></div><div id="tableContainer" hidden><div class="table-responsive"><table><thead><tr><th scope="col">#</th><th scope="col">Mata kuliah</th><th scope="col" class="text-center">SKS</th><th scope="col" class="text-center">Nilai</th><th scope="col" class="text-center">Poin</th><th scope="col" class="text-center">Aksi</th></tr></thead><tbody id="courseTableBody"></tbody></table></div></div></section>
+                </div>
+            </section>
+            <section class="tab-panel" id="panelGuide" role="tabpanel" aria-labelledby="tabGuide" tabindex="0" hidden>
+                <div class="page-heading compact-heading"><div><p class="eyebrow">REFERENSI</p><h1>Pahami perhitunganmu</h1><p class="lede">Bobot nilai dan predikat yang digunakan kalkulator IPK.</p></div></div>
+                <div class="guide-grid"><section class="card guide-card"><div class="table-header"><div><p class="eyebrow">BOBOT NILAI</p><h2>Skala nilai huruf</h2></div></div><div class="table-responsive"><table><thead><tr><th scope="col">Nilai</th><th scope="col">Bobot</th><th scope="col">Keterangan</th></tr></thead><tbody><tr class="grade-row grade-e"><th scope="row"><span class="grade-chip">E</span></th><td>0.00</td><td>Tidak lulus</td></tr><tr class="grade-row grade-d"><th scope="row"><span class="grade-chip">D</span></th><td>1.00</td><td>Kurang</td></tr><tr class="grade-row grade-c"><th scope="row"><span class="grade-chip">C</span></th><td>2.00</td><td>Cukup</td></tr><tr class="grade-row grade-bc"><th scope="row"><span class="grade-chip">BC</span></th><td>2.50</td><td>Lebih dari cukup</td></tr><tr class="grade-row grade-b"><th scope="row"><span class="grade-chip">B</span></th><td>3.00</td><td>Baik</td></tr><tr class="grade-row grade-ab"><th scope="row"><span class="grade-chip">AB</span></th><td>3.50</td><td>Baik sekali</td></tr><tr class="grade-row grade-a"><th scope="row"><span class="grade-chip">A</span></th><td>4.00</td><td>Sangat baik</td></tr></tbody></table></div><p class="formula-note"><strong>Rumus IPK</strong><br>Total (SKS × bobot nilai) ÷ total SKS.</p></section>
+                    <section class="guide-aside"><img class="media-art guide-art" src="assets/grade-scale.svg" alt="Ilustrasi tujuh batang nilai dari E hingga A, meningkat dari bobot nol sampai empat."><span class="media-fallback" hidden>Ilustrasi skala nilai tidak dapat dimuat.</span><div><p class="eyebrow">PREDIKAT OTOMATIS</p><h2>Hasil akhir, lebih mudah dibaca.</h2><p>Predikat ditentukan dari IPK yang tercatat:</p><ul class="predicate-list"><li><span>3.51 ke atas</span><strong>Dengan Pujian</strong></li><li><span>3.00–3.50</span><strong>Sangat Memuaskan</strong></li><li><span>2.75–2.99</span><strong>Memuaskan</strong></li><li><span>Di bawah 2.75</span><strong>Cukup</strong></li></ul></div></section>
+                </div>
+            </section>
+            <section class="tab-panel" id="panelProfile" role="tabpanel" aria-labelledby="tabProfile" tabindex="0" hidden>
+                <div class="page-heading compact-heading"><div><p class="eyebrow">IDENTITAS MAHASISWA</p><h1>Profil</h1><p class="lede">Simpan informasi diri untuk melengkapi dashboard akademikmu.</p></div></div>
+                <section class="card profile-card" aria-labelledby="profileFormTitle">
+                    <div class="profile-intro"><div class="avatar-frame"><img id="profilePhotoPreview" alt="Pratinjau foto profil" hidden><span id="profilePhotoPlaceholder" aria-hidden="true">👤</span></div><div><p class="eyebrow">PROFIL MAHASISWA</p><h2 id="profileFormTitle">Data diri</h2><p class="profile-hint">Foto JPG, PNG, atau WebP. Maksimal 2 MB.</p></div></div>
+                    <form id="profileForm" novalidate>
+                        <div class="profile-fields">
+                            <div class="form-group"><label for="profileName">Nama lengkap</label><input id="profileName" name="profileName" type="text" autocomplete="name" maxlength="100" placeholder="Masukkan nama lengkap" required></div>
+                            <div class="form-group"><label for="profileNrp">Nomor NRP</label><input id="profileNrp" name="profileNrp" type="text" autocomplete="off" maxlength="30" placeholder="Masukkan nomor NRP" required></div>
+                            <div class="form-group profile-study"><label for="profileProgram">Program studi</label><input id="profileProgram" name="profileProgram" type="text" autocomplete="organization-title" maxlength="100" placeholder="Contoh: Pendidikan Profesi Veteriner" required></div>
+                        </div>
+                        <div class="profile-photo-row"><label class="photo-picker" for="profilePhoto"><span aria-hidden="true">＋</span> Pilih foto profil</label><input id="profilePhoto" type="file" accept="image/png,image/jpeg,image/webp" hidden><span id="profilePhotoName" class="photo-filename">Belum ada foto dipilih</span><button id="btnRemovePhoto" class="text-button remove-photo" type="button" hidden>Hapus foto</button></div>
+                        <p id="profileMessage" class="profile-message" role="status" aria-live="polite"></p>
+                        <div class="profile-actions"><button class="btn-primary save-profile" type="submit">Simpan profil</button></div>
+                    </form>
+                </section>
+            </section>
+
+            <section id="panelCatatanUji" aria-label="Catatan kuliah">
+                <p id="info" role="status" aria-live="polite">Penyimpanan siap digunakan.</p>
+                <form id="form">
+                    <label for="judul">Judul catatan</label>
+                    <input type="text" id="judul" name="judul" placeholder="Judul catatan">
+                    <button type="submit">Simpan catatan</button>
+                </form>
+                <div>
+                    <h2>Disematkan</h2>
+                    <div id="daftarDisematkan"></div>
+                </div>
+                <div>
+                    <h2>Semua catatan</h2>
+                    <div id="daftarSemuaCatatan"></div>
+                </div>
+            </section>
+        </main>
+        <footer class="app-footer"><span>Kalkulator IPK Interaktif</span><span>Perhitungan berdasarkan nilai mata kuliah dan SKS.</span></footer>
+    </div>
+    <div class="modal fade" id="modalKonfirmasi" tabindex="-1" aria-labelledby="judulKonfirmasi" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title h5" id="judulKonfirmasi"></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body" data-isi></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="btnKonfirmasiYa">Ya, hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="toastInfo" class="toast align-items-center text-bg-success border-0" role="status" aria-live="polite" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body" id="toastPesan"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Tutup"></button>
+        </div>
+    </div>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="src/app.js"></script>
+</body>
+</html>

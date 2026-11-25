@@ -1,0 +1,18 @@
+{
+  "aset": [
+    {
+      "berkas": "study-path.svg",
+      "jenis": "image/svg+xml",
+      "ukuran_kb": 1.2,
+      "sumber": "Dibuat untuk proyek Kalkulator IPK Interaktif",
+      "lisensi": "MIT"
+    },
+    {
+      "berkas": "grade-scale.svg",
+      "jenis": "image/svg+xml",
+      "ukuran_kb": 1.4,
+      "sumber": "Dibuat untuk proyek Kalkulator IPK Interaktif",
+      "lisensi": "MIT"
+    }
+  ]
+}
