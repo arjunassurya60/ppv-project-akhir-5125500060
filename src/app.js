@@ -1,3 +1,8 @@
+import { tampilToast, tampilKonfirmasi } from './ui-pustaka.js';
+import { ringkasan, tentukanPredikat } from './state.js';
+import { KUNCI, muat, simpan } from './storage.js';
+import { BarisMataKuliah, KartuCatatan } from './komponen.js';
+
 function simpanCourses(daftar) {
     const hasil = simpan(daftar);
     if (!hasil.ok && hasil.pesan) {
@@ -5,11 +10,6 @@ function simpanCourses(daftar) {
     }
     return hasil;
 }
-
-import { tampilToast, tampilKonfirmasi } from './ui-pustaka.js';
-import { ringkasan, tentukanPredikat } from './state.js';
-import { KUNCI, muat, simpan } from './storage.js';
-import { BarisMataKuliah, KartuCatatan } from './komponen.js';
 
 const initialItems = muat();
 let notes = initialItems.filter(item => typeof item?.judul === 'string');
